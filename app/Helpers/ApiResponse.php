@@ -15,7 +15,7 @@ class ApiResponse {
     public static function error(string $message = 'Error', int $code = 500, $errors = null)
     {
         return response()->json([
-            'status'  => 'error',
+            'status'  => false,
             'message' => $message,
             'errors'  => $errors,
         ], $code);
