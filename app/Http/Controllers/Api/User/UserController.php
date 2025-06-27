@@ -9,10 +9,12 @@ use App\Http\Requests\Api\User\UserStoreRequest;
 use App\Http\Requests\Api\User\UserUpdateRequest;
 use App\Service\User\UserService;
 use Illuminate\Http\JsonResponse;
+
 use Throwable;
 
 class UserController extends Controller
 {
+
     protected $userService;
 
     public function __construct(UserService $userService)
@@ -48,7 +50,7 @@ class UserController extends Controller
             $dto = new UserDto($request->validated());
             $user = $this->userService->store($dto);
             return ApiResponse::success($user, 'User created successfully.', 201);
-        } catch (Throwable $e) {
+        } catch (\Exception $e) {
             return ApiResponse::error('Failed to create user.' . $e->getMessage(), 500);
         }
     }
@@ -63,8 +65,8 @@ class UserController extends Controller
             }
             $user = $this->userService->update($id, $data);
             return ApiResponse::success($user, 'User updated successfully.');
-        } catch (Throwable $e) {
-            return ApiResponse::error('Failed to update user.', 500);
+        } catch (\Exception $e) {
+            return ApiResponse::error('Failed to update user.' . $e->getMessage(), 500);
         }
     }
 
@@ -73,8 +75,8 @@ class UserController extends Controller
         try {
             $this->userService->delete($id);
             return ApiResponse::success(null, 'User deleted successfully.');
-        } catch (Throwable $e) {
-            return ApiResponse::error('Failed to delete user.', 500);
+        } catch (\Exception $e) {
+            return ApiResponse::error('Failed to delete user.' . $e->getMessage(), 500);
         }
     }
 
