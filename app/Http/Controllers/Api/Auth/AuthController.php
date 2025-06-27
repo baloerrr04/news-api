@@ -48,8 +48,8 @@ class AuthController extends Controller
             return ApiResponse::error('Missing refresh token', 401);
         }
         try {
-            $newToken = $this->authService->refreshToken($refreshToken);
-            return ApiResponse::success($newToken, "Refresh Token is successfull.", 200);
+            $data = $this->authService->refreshToken($refreshToken);
+            return ApiResponse::success($data, "Refresh Token is successful", 200);
         } catch (\Exception $e) {
             return ApiResponse::error('Refresh token failed: ' . $e->getMessage(), 403);
         }

@@ -79,6 +79,40 @@ class AuthService implements AuthServiceInterface
 
     public function refreshToken(string $refreshToken)
     {
-        return JWTAuth::setToken($refreshToken)->refresh();
+        $payload = JWTAuth::setToken($refreshToken)->getPayload();
+
+        if ($payload->get('type') !== 'refresh') {
+            throw new \Exception('Token is not a refresh token');
+        }
+
+        $userId = $payload->get('sub');
+        $user = $this->userRepository->find($userId);
+
+        $accessPayload = JWTFactory::customClaims([
+            'sub' => $user->id,
+            'role' => $user->getRoleNames()->first() ?? 'user',
+            'type' => 'access',
+        ])->make();
+
+
+        $accessToken = JWTAuth::encode($accessPayload)->get();
+
+        $idPayload = JWTFactory::customClaims([
+            'sub' => $user->id,
+            'name' => $user->name,
+            'created_at' => $user->created_at,
+            'updated_at' => $user->updated_at,
+            'type' => 'id',
+        ])->make();
+
+        $idToken = JWTAuth::encode($idPayload)->get();
+
+        Cookie::queue('access_token', $accessToken, 60, '/', null, false, true);
+        Cookie::queue('id_token', $idToken, 60, '/', null, false, false);
+
+        return [
+            'message' => 'Token refreshed successfully',
+            'expires_in' => Auth::factory()->getTTL() * 60,
+        ];
     }
 }
