@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Service\Auth;
+namespace App\Services\Auth;
 
 use App\Repositories\Auth\AuthRepository;
 use App\Repositories\User\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTFactory;
 
@@ -32,7 +31,7 @@ class AuthService implements AuthServiceInterface
     public function login(string $username, string $password)
     {
         if (!$token = JWTAuth::attempt([
-            'name' => $username,
+            'username' => $username,
             'password' => $password
         ])) {
             throw new \Exception('Invalid credentials');
@@ -50,7 +49,7 @@ class AuthService implements AuthServiceInterface
 
         $idPayload = JWTFactory::customClaims([
             'sub' => $user->id,
-            'name' => $user->name,
+            'username' => $user->username,
             'created_at' => $user->created_at,
             'updated_at' => $user->updated_at,
             'type' => 'id'
@@ -73,7 +72,6 @@ class AuthService implements AuthServiceInterface
         return response()
             ->json([
                 'message' => 'Login user is successfull',
-                'access_token' => $accessToken
             ]);
     }
 
@@ -99,7 +97,7 @@ class AuthService implements AuthServiceInterface
 
         $idPayload = JWTFactory::customClaims([
             'sub' => $user->id,
-            'name' => $user->name,
+            'username' => $user->username,
             'created_at' => $user->created_at,
             'updated_at' => $user->updated_at,
             'type' => 'id',

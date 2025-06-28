@@ -6,9 +6,9 @@ use App\Models\User;
 
 class AuthRepository implements AuthRepositoryInterface {
 
-    public function findByName(string $name): ?User
+    public function findByUsername(string $username): ?User
     {
-        return User::where('name', $name)->first();    
+        return User::where('username', $username)->first();    
     }
 
 }

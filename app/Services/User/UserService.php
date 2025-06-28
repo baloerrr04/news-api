@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Service\User;
+namespace App\Services\User;
 
-use App\DTOs\User\UserDto;
 use App\Repositories\User\UserRepository;
-use App\Service\User\UserServiceInterface;
+use App\Services\User\UserServiceInterface;
 
 class UserService implements UserServiceInterface {
 
@@ -25,9 +24,9 @@ class UserService implements UserServiceInterface {
         return $this->userRepository->find($id);
     }
 
-    public function store(UserDto $data)
+    public function store(array $data)
     {
-        return $this->userRepository->create($data->toArray());
+        return $this->userRepository->create($data);
     }
 
     public function update($id, array $data)

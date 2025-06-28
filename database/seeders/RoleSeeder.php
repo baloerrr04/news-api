@@ -21,6 +21,7 @@ class RoleSeeder extends Seeder
             ['email' => 'admin@gmail.com'],
             [
                 'name' => 'Admin',
+                'username' => 'admin',
                 'password' => bcrypt('admin123'),
             ]
         );
@@ -31,6 +32,7 @@ class RoleSeeder extends Seeder
             ['email' => 'user@gmail.com'],
             [
                 'name' => 'User',
+                'username' => 'user',
                 'password' => bcrypt('user123'),
             ]
         );

@@ -7,7 +7,7 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\UserStoreRequest;
 use App\Http\Requests\Api\User\UserUpdateRequest;
-use App\Service\User\UserService;
+use App\Services\User\UserService;
 use Illuminate\Http\JsonResponse;
 
 use Throwable;
@@ -47,8 +47,7 @@ class UserController extends Controller
     public function store(UserStoreRequest $request): JsonResponse
     {
         try {
-            $dto = new UserDto($request->validated());
-            $user = $this->userService->store($dto);
+            $user = $this->userService->store($request->validated());
             return ApiResponse::success($user, 'User created successfully.', 201);
         } catch (\Exception $e) {
             return ApiResponse::error('Failed to create user.' . $e->getMessage(), 500);
@@ -59,7 +58,6 @@ class UserController extends Controller
     {
         try {
             $data = $request->validated();
-
             if (isset($data['password'])) {
                 $data['password'] = bcrypt($data['password']);
             }

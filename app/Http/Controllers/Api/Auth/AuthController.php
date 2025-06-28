@@ -6,7 +6,7 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Auth\UserLoginRequest;
 use App\Http\Requests\Api\Auth\UserRegisterRequest;
-use App\Service\Auth\AuthService;
+use App\Services\Auth\AuthService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -34,7 +34,7 @@ class AuthController extends Controller
     {
         try {
             $data = $request->validated();
-            $result = $this->authService->login($data['name'], $data['password']);
+            $result = $this->authService->login($data['username'], $data['password']);
             return ApiResponse::success($result, "Login user is successfull.", 200);
         } catch (\Exception $e) {
             return ApiResponse::error('Login user failed: ' . $e->getMessage(), 500);
