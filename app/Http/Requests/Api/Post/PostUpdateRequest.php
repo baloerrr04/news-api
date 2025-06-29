@@ -24,6 +24,7 @@ class PostUpdateRequest extends FormRequest
         return [
             'title' => 'sometimes|required|string|max:255',
             'content' => 'sometimes|required|string',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category_id' => 'sometimes|exists:categories,id',
 
         ];

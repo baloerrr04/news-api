@@ -22,6 +22,7 @@ Route::prefix('users')->middleware([JwtFromCookieMiddleware::class, 'role:admin'
     Route::delete('/{id}', [UserController::class, 'destroy']);
 });
 
+
 Route::prefix('posts')->middleware([JwtFromCookieMiddleware::class])->group(function () {
     Route::get('/', [PostController::class, 'index']);
     Route::middleware(['role:admin'])->group(function () {

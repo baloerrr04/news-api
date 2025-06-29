@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\ActivityLogger\ActivityLoggerRepository;
+use App\Repositories\ActivityLogger\ActivityLoggerRepositoryInterface;
 use App\Repositories\Auth\AuthRepository;
 use App\Repositories\Auth\AuthRepositoryInterface;
 use App\Repositories\Category\CategoryRepository;
@@ -46,6 +48,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(LikeServiceInterface::class, LikeRepository::class);
         $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
         $this->app->bind(CategoryServiceInterface::class, CategoryService::class);
+        $this->app->bind(ActivityLoggerRepositoryInterface::class, ActivityLoggerRepository::class);
     }
 
     /**
