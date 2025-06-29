@@ -22,6 +22,38 @@ class PostController extends Controller
         $this->activityLoggerService = $activityLoggerService;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/posts",
+     *     tags={"Posts"},
+     *     summary="Get all posts with optional filters and pagination",
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="Search post by title",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="category_id",
+     *         in="query",
+     *         description="Filter by category ID",
+     *         required=false,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Pagination page number",
+     *         required=false,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of posts"
+     *     )
+     * )
+     */
     public function index(Request $request): JsonResponse
     {
         try {
@@ -33,6 +65,29 @@ class PostController extends Controller
         }
     }
 
+
+    /**
+     * @OA\Get(
+     *     path="/api/posts/{id}",
+     *     tags={"Posts"},
+     *     summary="Get post by ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Post ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Post detail"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Post not found"
+     *     )
+     * )
+     */
     public function show($id)
     {
         try {
@@ -47,6 +102,35 @@ class PostController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/posts",
+     *     tags={"Posts"},
+     *     summary="Create a new post",
+     *     description="Create a post with title, content, category, and thumbnail.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"title", "content", "category_id"},
+     *                 @OA\Property(property="title", type="string", example="AI is amazing"),
+     *                 @OA\Property(property="content", type="string", example="Exploring GPT-4's power"),
+     *                 @OA\Property(property="category_id", type="integer", example=1),
+     *                 @OA\Property(property="thumbnail", type="string", format="binary")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Post created successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation failed"
+     *     )
+     * )
+     */
     public function store(PostStoreRequest $request)
     {
         try {
@@ -59,6 +143,40 @@ class PostController extends Controller
         }
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/posts/{id}",
+     *     tags={"Posts"},
+     *     summary="Update a post",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Post ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="title", type="string", example="Updated title"),
+     *                 @OA\Property(property="content", type="string", example="Updated content"),
+     *                 @OA\Property(property="category_id", type="integer", example=1),
+     *                 @OA\Property(property="thumbnail", type="string", format="binary")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Post updated successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Post not found"
+     *     )
+     * )
+     */
     public function update(PostUpdateRequest $request, $id): JsonResponse
     {
         try {
@@ -72,6 +190,28 @@ class PostController extends Controller
         }
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/posts/{id}",
+     *     tags={"Posts"},
+     *     summary="Delete a post",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Post ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Post deleted successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Post not found"
+     *     )
+     * )
+     */
     public function destroy($id): JsonResponse
     {
         try {

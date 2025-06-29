@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 
 
 use App\Repositories\Post\PostRepository;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class PostService implements PostServiceInterface
@@ -53,6 +52,7 @@ class PostService implements PostServiceInterface
         if (!$post) {
             throw new \Exception("Post not found.");
         }
+        
         if (isset($data['title'])) {
             $data['slug'] = Str::slug($data['title']);
         }
